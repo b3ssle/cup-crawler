@@ -88,18 +88,22 @@ class EmpressCupCrawler:
 
     def update_matches(self) -> Dict:
         try:
+            print("開始爬取網頁...")
             response = requests.get(self.schedule_url, headers=self.headers)
             response.raise_for_status()
             response.encoding = 'utf-8'
+            print(f"網頁回應狀態: {response.status_code}")
             
             match_blocks = self.extract_match_blocks(response.text)
-            updated_data = {}
+            print(f"找到 {len(match_blocks)} 場比賽")
             
+            updated_data = {}
             for block in match_blocks:
                 match_info = self.parse_match_info(block)
                 if match_info:
                     updated_data[match_info['id']] = match_info
             
+            print(f"成功解析 {len(updated_data)} 場比賽資料")
             return updated_data
             
         except Exception as e:
