@@ -103,7 +103,10 @@ class EmpressCupCrawler:
             response.raise_for_status()
             response.encoding = 'utf-8'
             logger.info(f"網頁回應狀態: {response.status_code}")
-            
+        
+            # 印出 HTML 內容
+            logger.info(f"HTML content: {response.text[:1000]}")
+        
             match_blocks = self.extract_match_blocks(response.text)
             logger.info(f"找到 {len(match_blocks)} 場比賽")
             
