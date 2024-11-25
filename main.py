@@ -82,13 +82,18 @@ class EmpressCupCrawler:
     def extract_match_blocks(self, html_content: str) -> List[str]:
         logger.info("開始提取比賽區塊")
         soup = BeautifulSoup(html_content, 'html.parser')
+
         matches = []
-        
-        match_rows = soup.find_all('tr', class_='match')
+        match_rows = soup.select('tr.matchCard')
         logger.info(f"找到 {len(match_rows)} 個比賽區塊")
+
+        # 保存 HTML 來檢查
+        with open('debug.html', 'w', encoding='utf-8') as f:
+             f.write(html_content)
+        
         for row in match_rows:
             matches.append(str(row))
-            
+
         return matches
 
     def update_matches(self) -> Dict:
